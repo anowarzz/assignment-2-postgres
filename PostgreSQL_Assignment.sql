@@ -54,3 +54,13 @@ INSERT INTO rangers (name, region) VALUES ('Derek Fox', 'Coastal Plains');
 
 -- 2️⃣ Count unique species ever sighted.
 SELECT count(DISTINCT species_id) as unique_species_count FROM sightings;
+
+
+-- 3️⃣ Find all sightings where the location includes "Pass".
+SELECT * FROM sightings 
+WHERE location LIKE '%Pass%';
+
+-- 4️⃣ List each ranger's name and their total number of sightings.
+
+SELECT name, count(ranger_id) as total_sightings FROM rangers
+INNER JOIN sightings USING(ranger_id) GROUP BY name
