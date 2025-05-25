@@ -68,7 +68,8 @@ INNER JOIN sightings s USING(ranger_id)
 
 
 -- 5️⃣ List species that have never been sighted.
-
+SELECT common_name FROM species
+WHERE
 
 
 -- 6️⃣ Show the most recent 2 sightings.
@@ -82,4 +83,20 @@ SET conservation_status = 'Historic'
 WHERE extract(YEAR FROM discovery_date) < 1800 ;
 
 
-SELECT * from species
+-- 8️⃣ Label each sighting's time of day as 'Morning', 'Afternoon', or 'Evening'.
+SELECT sighting_id,
+CASE 
+    WHEN extract(hour FROM sighting_time) BETWEEN 0 AND 11 THEN 'Morning'  
+    WHEN extract(hour FROM sighting_time) BETWEEN 12 AND 16 THEN 'Afternoon'  
+    ELSE  'Evening'
+END AS time_of_day
+ FROM sightings;
+
+
+
+-- 9️⃣ Delete rangers who have never sighted any species
+
+
+
+
+SELECT * from rangers
