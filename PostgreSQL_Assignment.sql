@@ -74,3 +74,12 @@ INNER JOIN sightings s USING(ranger_id)
 -- 6️⃣ Show the most recent 2 sightings.
 SELECT common_name, sighting_time, name FROM rangers
 INNER JOIN sightings USING(ranger_id) INNER JOIN species USING(species_id) ORDER BY sighting_time DESC LIMIT 2; 
+
+
+-- 7️⃣ Update all species discovered before year 1800 to have status 'Historic'.
+UPDATE species
+SET conservation_status = 'Historic' 
+WHERE extract(YEAR FROM discovery_date) < 1800 ;
+
+
+SELECT * from species
