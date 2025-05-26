@@ -38,3 +38,114 @@ SELECT * FROM books;`
 | book_id | title                 | price |
 | ------- | --------------------- | ----- |
 | 1       | PostgreSQL এর হাতেখড়ি | 250   |
+
+<br/>
+<br/>
+<br/>
+
+## 2. Explain the **Primary Key** and **Foreign Key** concepts in PostgreSQL.
+
+**Primary Key এবং Foreign Key কী?**
+
+ডেটাবেজ ডিজাইনের সময় সবচেয়ে গুরুত্বপূর্ণ জিনিসগুলোর মধ্যে একটা হলো ‍**Primary Key** এবং **Foreign Key**। PostgreSQL-এ এই দুটো কনসেপ্ট ডেটার মধ্যে সম্পর্ক তৈরি করতে ও ডেটাকে ইউনিক ও নিরাপদ রাখতে সাহায্য করে।
+
+---
+
+### **Primary Key**
+
+Primary Key এমন একটি কলাম বা কলাম এর সমষ্টি যা প্রতিটি রেকর্ডকে ইউনিকভাবে শনাক্ত করে থাকে। Primar Key এর বৈশিষ্ট্য গুলো হলো:
+
+- এটি NULL থাকতে পারে না
+- এক টেবিলে একটিই Primary Key থাকতে পারে
+- সাধারণত ID টাইপের ফিল্ডেই এটা ব্যবহার করা হয়.
+
+### **Foreign Key**
+
+Foreign Key একটি কলাম যা অন্য একটি টেবিলের Primary Key কে রেফার করে, যার মাধ্যমে দুইটি টেবিলের মধ্যে সম্পর্ক তৈরি হয়। Foreign Key এর বৈশিষ্ট্য গুলো হলো:
+
+- এটি মূলত রিলেশন বা কানেকশন দেখায়
+- একাধিক Foreign Key একটি টেবিলে থাকতে পারে
+- Parent টেবিলের ডেটা ডিলিট বা আপডেট হলে চেইন রিঅ্যাকশন ঘটে (যদি কনস্ট্রেইন্ট সেট করা থাকে)
+
+---
+
+### Primary Key এবং Foreign Key এর উদাহরণ:
+
+ধরা যাক আমাদের দুইটা টেবিল আছে – `students` এবং `courses`:
+
+```sql
+-- Students টেবিল
+CREATE TABLE students (
+    student_id SERIAL PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+-- Courses টেবিল যেখানে student_id হচ্ছে Foreign Key
+CREATE TABLE courses (
+    course_id SERIAL PRIMARY KEY,
+    course_name VARCHAR(100),
+    student_id INTEGER REFERENCES students(student_id)
+);
+
+```
+
+এখানে `students.student_id` হলো **Primary Key**
+
+আর `courses.student_id` হলো **Foreign Key**
+
+যার মাধ্যমে বোঝানো হচ্ছে কে কোন কোর্সে এনরোল করেছে।
+
+---
+
+এইভাবে Primary ও Foreign Key ব্যবহার করে আমরা ডেটাবেজে সম্পর্ক তৈরি করতে পারি, ভুল রেকর্ড ঢোকা ঠেকাতে পারি, এবং ডেটা কনসিসটেন্ট রাখতে পারি।
+
+## 3. Explain the purpose of the `WHERE` clause in a `SELECT` statement.
+
+**SELECT এর মধ্যে WHERE clause কেন ব্যবহার করা হয়?**
+
+আমরা যখন PostgreSQL-এ `SELECT` দিয়ে ডেটা কোয়েরি করে আনি, তখন সাধারণভাবে সব রেকর্ডই চলে আসে। কিন্তু অনেক সময় আমাদের দরকার হয় নির্দিষ্ট কিছু শর্ত অনুযায়ী ডেটা ফিল্টার করে দেখানোর । তখনই আমরা ব্যবহার করি `WHERE` clause।
+
+---
+
+### **WHERE clause এর কাজ কী?**
+
+`WHERE` clause ব্যবহার করা হয় ডেটার উপর শর্ত বসানোর জন্য।
+
+যার অর্থ হলো, টেবিলের সব রেকর্ড না এনে – শুধু যেগুলোর সাথে শর্ত মিলে, সেগুলোকেই নিয়ে আসা।
+
+#### **WHERE clause এর বৈশিষ্ট্য:**
+
+- `WHERE` = শর্ত দিয়ে ডেটা ফিল্টার করা
+- সব কলামেই ব্যবহার করা যায়
+- `SELECT`, `UPDATE`, `DELETE`—সব জায়গায় `WHERE` কাজ করে
+
+---
+
+### উদাহরণঃ
+
+ধরি আমাদের একটা `students` নামের টেবিল আছে:
+
+```sql
+
+SELECT * FROM students WHERE age > 18;
+
+```
+
+এই কোয়েরিটা শুধু সেইসব Student দেরকে দেখাবে, যাদের বয়স ১৮ বছরের বেশি।
+
+---
+
+### WHERE ব্যবহার করে আরও কিছু শর্তের উদাহরণঃ
+
+```sql
+-- যাদের নাম 'Anika' তাদের দেখাও
+SELECT * FROM students WHERE name = 'Anika';
+
+-- যাদের বয়স ২০ বা তার বেশি
+SELECT * FROM students WHERE age >= 20;
+
+-- যাদের বিভাগ 'Science' নয়
+SELECT * FROM students WHERE department != 'Science';
+```
+
+---
