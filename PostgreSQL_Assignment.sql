@@ -98,6 +98,8 @@ END AS time_of_day
 
 
 -- 9️⃣ Delete rangers who have never sighted any species
+DELETE FROM rangers
+WHERE NOT EXISTS (
+SELECT 1 FROM sightings WHERE sightings.ranger_id = rangers.ranger_id
+)
 
-
-SELECT * from rangers
