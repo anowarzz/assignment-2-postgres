@@ -63,7 +63,7 @@ WHERE location LIKE '%Pass%';
 -- 4️⃣ List each ranger's name and their total number of sightings.
 SELECT r.name , count(s.sighting_id) AS total_sightings FROM rangers r
 INNER JOIN sightings s USING(ranger_id)
- GROUP BY r.ranger_id 
+ GROUP BY r.ranger_id , name
  ORDER BY r.name
 
 
