@@ -69,7 +69,10 @@ INNER JOIN sightings s USING(ranger_id)
 
 -- 5️⃣ List species that have never been sighted.
 SELECT common_name FROM species
-WHERE
+LEFT JOIN sightings USING(species_id)
+WHERE sightings.species_id IS NULL ;
+
+
 
 
 -- 6️⃣ Show the most recent 2 sightings.
@@ -95,8 +98,6 @@ END AS time_of_day
 
 
 -- 9️⃣ Delete rangers who have never sighted any species
-
-
 
 
 SELECT * from rangers
